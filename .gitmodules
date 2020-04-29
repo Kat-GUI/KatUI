@@ -1,0 +1,9 @@
+[submodule "src/Layout"]
+	path = src/Layout
+	url = git@github.com:Kat-GUI/KatLayout.git
+[submodule "src/Presenter"]
+	path = src/Presenter
+	url = git@github.com:Kat-GUI/KatPresenter.git
+[submodule "src/Manager"]
+	path = src/Manager
+	url = git@github.com:Kat-GUI/KatManager.git
