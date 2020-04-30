@@ -1,0 +1,1 @@
+//const std::shared_ptr<Manager> Manager::singleton((Manager*)new linuxManager);

@@ -5,7 +5,7 @@
 #define KATUI_KAT_H
 
 #include<string>
-#include"Layout/src/Layout.h"
+#include"Layout.h"
 
 namespace kat {
     class Widget : public Layout {
@@ -24,14 +24,12 @@ namespace kat {
     };
 }
 
-#include"Presenter/src/Presenter.h"
-#include"Manager/src/Manager.h"
+#include"Presenter.h"
+#include"Manager.h"
 #ifdef _WIN32
-    #include"Manager/src/Win32Manager.h"
-    #include"Presenter/src/D2DPresenter.h"
+#include"Windows/windowsPkg.h"
 #elif __linux__
-    #include"Manager/src/LinuxManager.h"
-    #include"Presenter/src/XlibPresenter.h"
+#include"Linux/linuxPkg.h"
 #endif
 
 namespace kat {
