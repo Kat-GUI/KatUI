@@ -6,26 +6,33 @@
 
 #include<string>
 #include"Layout.h"
-
+#include"Presenter.h"
+#include"Manager.h"
 namespace kat {
+    enum Message {
+        paint
+    };
+    class Form;
     class Widget : public Layout {
-        enum Enum {
-            paint
-        };
-
-        virtual void processMessage(Enum msg) {
+        friend Form;
+        virtual void processMessage(Message msg) {
 
         }
-
+        virtual void refresh(std::shared_ptr<Presenter> presenter){};
     public:
+        virtual int getBoxMinWidth()override{};
+        virtual int getBoxMaxWidth()override{};
+        virtual int getBoxMinHeight()override{};
+        virtual int getBoxMaxHeight()override{};
+        virtual bool extendableInWidth()override{};
+        virtual bool extendableInHeight()override{};
+        virtual int getBoxWidth()override{};
+        virtual int getBoxHeight()override{};
         virtual void calcuRegion(Region anchor) {
             region = anchor;
         }
     };
 }
-
-#include"Presenter.h"
-#include"Manager.h"
 #ifdef _WIN32
 #include"Windows/windowsPkg.h"
 #elif __linux__
@@ -34,24 +41,52 @@ namespace kat {
 
 namespace kat {
     class Form:public Widget{
-        friend void startUp(Form form);
+        bool loaded=false;
+        std::wstring title;
+        template<typename FORM>
+        friend void startUp(std::wstring title,int left,int top,int width,int height);
         std::shared_ptr<formController> controller;
     public:
-        Form(std::wstring title,int left,int top,int width,int height){
-            controller=Manager::singleton->createForm(left,top,width,height,title);
+        std::shared_ptr<Presenter> presenter;
+        void show(){
+            if(loaded)return;
+            controller=Manager::singleton->createForm(region.l,region.t,region.w,region.h,title);
+            presenter=Manager::singleton->CreatePresenter(controller);
+            loaded=true;
+            load();
         }
-        virtual int getBoxMinWidth(){};
-        virtual int getBoxMaxWidth(){};
-        virtual int getBoxMinHeight(){};
-        virtual int getBoxMaxHeight(){};
-        virtual bool extendableInWidth(){};
-        virtual bool extendableInHeight(){};
-        virtual int getBoxWidth(){};
-        virtual int getBoxHeight(){};
+        virtual std::wstring getTitle(){
+            return title;
+        }
+        virtual void load()=0;
+        virtual void processMessage(Message msg)override{
+
+        }
     };
-    void startUp(Form form){
+
+    template<typename FORM>
+    void startUp(std::wstring title,int left,int top,int width,int height){
+        FORM form;
+        form.region.l=left;
+        form.region.t=top;
+        form.region.w=width;
+        form.region.h=height;
+        form.title=title;
+        form.show();
         Manager::singleton->MainLoop(form.controller);
-    }
+    };
+
+    class Rectangle:public Widget{
+    public:
+        colorPtr background,foreground;
+        Rectangle(colorPtr background,colorPtr foreground):background(background),foreground(foreground){}
+        virtual void refresh(std::shared_ptr<Presenter> presenter)override{
+            presenter->fillRectangle(region,background);
+            presenter->drawRectangle(region,foreground);
+        }
+    };
+
+#define startApp(myForm,title) int main(){startUp<myForm>(title,0,0,400,400);}
 }
 
 #endif //KATUI_KAT_H

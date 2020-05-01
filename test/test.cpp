@@ -2,7 +2,13 @@
 #include"../src/kat.h"
 using namespace kat;
 
-Form form(L"撒旦发射点发的",100,100,500,500);
-int main() {
-    startUp(form);
-}
+class myApp:public Form{
+public:
+    virtual void load()override{
+        //构造组件
+        child.reset(new kat::Rectangle(presenter->RGBA(100,0,100),
+                                          presenter->RGBA(100,0,0)));
+    }
+};
+
+startApp(myApp,L"啦啦啦")
