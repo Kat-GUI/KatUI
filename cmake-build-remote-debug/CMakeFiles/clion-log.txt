@@ -1,0 +1,9 @@
+/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /tmp/tmp.AXMLpnV2f2
+CMake Error at /usr/share/cmake-3.9/Modules/FindX11.cmake:429 (message):
+  Could not find X11
+Call Stack (most recent call first):
+  CMakeLists.txt:5 (find_package)
+
+
+-- Configuring incomplete, errors occurred!
+See also "/tmp/tmp.AXMLpnV2f2/cmake-build-remote-debug/CMakeFiles/CMakeOutput.log".

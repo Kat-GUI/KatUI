@@ -1,7 +1,7 @@
 #include <iostream>
+using namespace std;
 #include"../src/kat.h"
 using namespace kat;
-
 class myApp:public Form{
 public:
     virtual void load()override{
