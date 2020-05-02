@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/KatUI.dir/test/test.cpp.o  -o KatUI 
